@@ -1,8 +1,8 @@
 package fr.chess.model;
 
 public abstract class Piece {
-    private Color color;
-    private PieceType type;
+    private final Color color;
+    private final PieceType type;
 
     public Piece(Color color, PieceType type){
         this.color = color;
@@ -17,7 +17,14 @@ public abstract class Piece {
         return type;
     }
 
-    public void setType(PieceType type){
-        this.type = type;
+    public abstract boolean isValidMove(Coordinate start, Coordinate end);
+
+    @Override
+    public String toString() {
+        String typeFisrtLetter = type.name().substring(0, 1).toUpperCase();
+
+        return color == Color.WHITE ?
+                typeFisrtLetter + "W-"
+                : typeFisrtLetter + "B-";
     }
 }
