@@ -8,7 +8,7 @@ import fr.chess.model.PieceType;
 public class Bishop extends Piece {
 
     public Bishop(Color color){
-        super(color, PieceType.ROOK);
+        super(color, PieceType.BISHOP);
     }
 
     @Override
