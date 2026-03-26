@@ -94,6 +94,14 @@ public class GameManager {
     }
 
     /**
+     * Get board.
+     * @return the board.
+     */
+    public Board getBoard(){
+        return board;
+    }
+
+    /**
      * Get color turn.
      * @return
      */
