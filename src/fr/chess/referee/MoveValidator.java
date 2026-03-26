@@ -7,6 +7,14 @@ import fr.chess.model.PieceType;
 
 public class MoveValidator {
 
+    /**
+     * Check if the way between source and target position was clear.
+     *
+     * @param source: initial position
+     * @param target: final position
+     * @param board: board game
+     * @return if the path is clear.
+     */
     public static  boolean isPathClear(Coordinate source, Coordinate target,Board board){
         Piece sourcePiece = board.getPiece(source);
 
@@ -20,10 +28,49 @@ public class MoveValidator {
         int currentRow = source.row() + stepRow;
         int currentCol = source.col() +stepCol;
 
-        while(currentRow!=source.row() || currentCol!=source.col()){
+        while(currentRow!=target.row() || currentCol!=target.col()){
+            Coordinate current = new Coordinate(currentRow,currentCol);
 
+            if(!board.isEmpty(current)){
+                return false;
+            }
+
+            currentRow += stepRow;
+            currentCol += stepCol;
         }
 
+        return true;
+    }
+
+    /**
+     * Check if target position is a legal move.
+     *
+     * @param source: the initial position
+     * @param target: the target position
+     * @param board: the board game
+     * @return if it's a legal move.
+     */
+    public boolean isLegalMove(Coordinate source, Coordinate target,Board board){
+        Piece movingPiece = board.getPiece(source);
+        Piece targetPiece = board.getPiece(target);
+
+        if(movingPiece == null)return false;
+
+        if(targetPiece!=null && targetPiece.getColor() == movingPiece.getColor())return false;
+
+        if(!movingPiece.isValidMove(source,target))return false;
+
+        if(!isPathClear(source,target,board)) return false;
+
+        if(movingPiece.getType()==PieceType.PAWN){
+            boolean isDiagonal = (source.col() != target.col());
+
+            if(isDiagonal){
+                if (targetPiece == null) return false;
+            }else{
+                if(targetPiece!=null) return false;
+            }
+        }
         return true;
     }
 }
