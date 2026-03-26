@@ -82,6 +82,7 @@ public class GameManager {
             case BISHOP -> new Bishop(color);
             case QUEEN -> new Queen(color);
             case KING -> new King(color);
+            case PAWN -> new Pawn(color);
             default -> throw new IllegalArgumentException("Unknow type");
         };
     }
