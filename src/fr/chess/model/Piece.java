@@ -21,10 +21,17 @@ public abstract class Piece {
 
     @Override
     public String toString() {
-        String typeFisrtLetter = type.name().substring(0, 1).toUpperCase();
+        char letter = switch (type) {
+            case PAWN -> 'P';
+            case ROOK -> 'R';
+            case KNIGHT -> 'N';
+            case BISHOP -> 'B';
+            case QUEEN -> 'Q';
+            case KING -> 'K';
+        };
 
-        return color == Color.WHITE ?
-                typeFisrtLetter + "W-"
-                : typeFisrtLetter + "B-";
+        String colorSuffix = (color == Color.WHITE) ? "W" : "B";
+
+        return letter + colorSuffix + "-";
     }
 }
