@@ -1,7 +1,12 @@
 package fr.chess.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board {
     private final Piece[][] pieces;
+    private final List<Piece> whitePieces = new ArrayList<>();
+    private final List<Piece> blackPieces = new ArrayList<>();
 
     public Board(){
         pieces = new Piece[8][8];
@@ -27,6 +32,14 @@ public class Board {
     public void setPiece(Piece piece,Coordinate target){
         if (!target.isValid()) return;
         pieces[target.row()][target.col()]=piece;
+
+        if(piece!=null){
+            piece.setPosition(target);
+            List<Piece> activeList = (piece.getColor()==Color.WHITE ? whitePieces : blackPieces);
+            if(!activeList.contains(piece)){
+                activeList.add(piece);
+            }
+        }
     }
 
     /**
@@ -35,7 +48,22 @@ public class Board {
      * @param target : the position of target Piece
      */
     public void deletePiece(Coordinate target){
+        Piece pieceToRemove = getPiece(target);
+        if(pieceToRemove != null){
+            List<Piece> activeList = (pieceToRemove.getColor()==Color.WHITE ? whitePieces : blackPieces);
+            activeList.remove(pieceToRemove);
+        }
         pieces[target.row()][target.col()]=null;
+    }
+
+    /**
+     * Get pieces list.
+     *
+     * @param color: the player color
+     * @return a list all pieces of one player thansk to there color.
+     */
+    public List<Piece> getAtctivePieces(Color color){
+        return (color==Color.WHITE ? whitePieces : blackPieces);
     }
 
     /**
@@ -67,5 +95,23 @@ public class Board {
             System.out.print("|\n");
         }
         System.out.print(separator_col);
+    }
+
+    /**
+     * Get the position of King.
+     *
+     * @param color: the color player
+     * @return the position of King.
+     */
+    public Coordinate findKing(Color color){
+        for(int r = 0;r<8;r++){
+            for(int c=0;c<8;c++){
+                Piece p = pieces[r][c];
+                if(p!=null && p.getType()==PieceType.KING && p.getColor() == color){
+                    return new Coordinate(r,c);
+                }
+            }
+        }
+        return null;
     }
 }
