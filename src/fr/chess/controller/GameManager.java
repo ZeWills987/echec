@@ -32,10 +32,18 @@ public class GameManager {
         // Check if referee valid move
         if(!validator.isLegalMove(source,target,board))return false;
 
+        // Save target piece before action
+        Piece capturedPiece = board.getPiece(target);
+
         // Move Piece
         board.setPiece(movingPiece,target);
         board.deletePiece(source);
 
+        // Vérification de la sécurité du Roi
+        if (validator.isKingInCheck(currentTurn, board)) {
+            board.undoMove(movingPiece, source, target, capturedPiece);
+            return false;
+        }
 
         switchTurn();
         return true;
