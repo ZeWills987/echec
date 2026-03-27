@@ -1,9 +1,8 @@
 package fr.chess.referee;
 
-import fr.chess.model.Board;
-import fr.chess.model.Coordinate;
-import fr.chess.model.Piece;
-import fr.chess.model.PieceType;
+import fr.chess.model.*;
+
+import java.util.List;
 
 public class MoveValidator {
 
@@ -72,6 +71,27 @@ public class MoveValidator {
             }
         }
         return true;
+    }
+
+
+    /**
+     * Check if King in check.
+     *
+     * @param kingColor: the color of King
+     * @param board: the boardgame
+     * @return if king is in check.
+     */
+    public boolean isKingInCheck(Color kingColor,Board board){
+        Coordinate kingPosition = board.findKing(kingColor);
+        List<Piece> enemies = board.getAtctivePieces(kingColor==Color.WHITE ? Color.BLACK:Color.WHITE);
+
+        for(Piece enemy : enemies){
+            if(enemy.isValidMove(enemy.getPosition(),kingPosition)){
+                isPathClear(enemy.getPosition(),kingPosition,board);
+                return true;
+            }
+        }
+        return false;
     }
 }
 
