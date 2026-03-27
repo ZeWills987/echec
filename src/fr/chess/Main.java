@@ -1,3 +1,5 @@
+package fr.chess;
+
 import fr.chess.controller.GameManager;
 import fr.chess.model.Board;
 import fr.chess.model.Coordinate;
