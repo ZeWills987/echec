@@ -30,7 +30,13 @@ public class Board {
      * @param target: the position
      */
     public void setPiece(Piece piece,Coordinate target){
-        if (!target.isValid()) return;
+        if (target == null || !target.isValid()) return;
+
+        Piece oldPiece = pieces[target.row()][target.col()];
+        if (oldPiece != null) {
+            getActivePieces(oldPiece.getColor()).remove(oldPiece);
+        }
+
         pieces[target.row()][target.col()]=piece;
 
         if(piece!=null){
@@ -62,7 +68,7 @@ public class Board {
      * @param color: the player color
      * @return a list all pieces of one player thansk to there color.
      */
-    public List<Piece> getAtctivePieces(Color color){
+    public List<Piece> getActivePieces(Color color){
         return (color==Color.WHITE ? whitePieces : blackPieces);
     }
 
