@@ -3,16 +3,17 @@ package fr.chess.controller;
 import fr.chess.model.*;
 import fr.chess.model.piece.*;
 import fr.chess.referee.MoveValidator;
+import fr.chess.referee.Referee;
 
 public class GameManager {
     private Board board;
     private Color currentTurn;
-    private MoveValidator validator;
+    private Referee referee;
 
     public GameManager(){
         this.board = new Board();
         this.currentTurn = Color.WHITE;
-        this.validator = new MoveValidator();
+        this.referee = new Referee();
         setUpBoard();
     }
 
@@ -30,7 +31,7 @@ public class GameManager {
         if(movingPiece==null || movingPiece.getColor()!= currentTurn) return false;
 
         // Check if referee valid move
-        if(!validator.isLegalMove(source,target,board))return false;
+        if(!referee.isMoveLegal(source,target,board))return false;
 
         // Save target piece before action
         Piece capturedPiece = board.getPiece(target);
@@ -39,14 +40,46 @@ public class GameManager {
         board.setPiece(movingPiece,target);
         board.deletePiece(source);
 
-        // Vérification de la sécurité du Roi
-        if (validator.isKingInCheck(currentTurn, board)) {
-            board.undoMove(movingPiece, source, target, capturedPiece);
-            return false;
+        switchTurn();
+
+        checkGameStatus();
+        return true;
+    }
+
+    /**
+     * Check if is check mate or pat.
+     */
+    private void checkGameStatus() {
+        if (referee.isCheckMate(currentTurn, board)) {
+            System.out.println("Check mate ! Winner is " + (currentTurn == Color.WHITE ? "NOIR" : "BLANC"));
+        } else if (referee.isStalemate(currentTurn, board)) {
+            System.out.println("Match nul (Pat) !");
+        }
+    }
+
+    /**
+     * Convert user move to coordinate.
+     *
+     * @param move: the move (e2-e3)
+     * @return the initial position and there target.
+     */
+    public Coordinate stringToCoordinate(String move) {
+        if (move == null || move.length() < 2) return null;
+
+        char charCol = move.toLowerCase().charAt(0);
+        int col = charCol - 'a';
+
+        int inputRow = Character.getNumericValue(move.charAt(1));
+
+        // Inversion : l'humain dit '1' pour le bas, mais le tableau commence à 0 en haut.
+        // Formule : 8 - 1 = 7 (la dernière ligne de ton tableau Java)
+        int row = 8 - inputRow;
+
+        if (row < 0 || row > 7 || col < 0 || col > 7) {
+            return null;
         }
 
-        switchTurn();
-        return true;
+        return new Coordinate(row, col);
     }
 
     /**
