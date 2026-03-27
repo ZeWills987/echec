@@ -114,4 +114,26 @@ public class Board {
         }
         return null;
     }
+
+    /**
+     * Cancel move in restore previous state.
+     *
+     * @param movingPiece: the moving piece
+     * @param source: the initial position
+     * @param target: the final position
+     * @param capturedPiece: the potentional piece in target position (can be null)
+     */
+    public void undoMove(Piece movingPiece, Coordinate source, Coordinate target, Piece capturedPiece) {
+        // Restore de previous position of the moving piece
+        this.setPiece(movingPiece, source);
+
+        // Target positon check
+        if (capturedPiece != null) {
+            // Restore captured piece
+            this.setPiece(capturedPiece, target);
+        } else {
+            // Clean moving piece in target position if nothing there in previous turn
+            this.deletePiece(target);
+        }
+    }
 }
