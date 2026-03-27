@@ -25,7 +25,7 @@ public class Board {
      * @param target: the position
      */
     public void setPiece(Piece piece,Coordinate target){
-        if (target.isValid()) return;
+        if (!target.isValid()) return;
         pieces[target.row()][target.col()]=piece;
     }
 
@@ -49,21 +49,23 @@ public class Board {
     }
 
     /**
-     * Board display.
+     * Display board in terminal.
      */
-    public void display() {
-        System.out.println("  a b c d e f g h"); // Lettres des colonnes
-        for (int r = 0; r < 8; r++) {
-            System.out.print((8 - r) + " "); // Chiffres des lignes (inversés pour les échecs)
-            for (int c = 0; c < 8; c++) {
-                Piece p = pieces[r][c];
-                if (p == null) {
-                    System.out.print(". "); // Case vide
-                } else {
-                    System.out.print(p.toString() + " "); // Ton toString perso !
-                }
+    public void displayBoard() {
+        String separator_col = "  +---+---+---+---+---+---+---+---+ \n";
+        System.out.println("    a   b   c   d   e   f   g   h ");
+
+        for (int i = 0; i < 8; i++) {
+            System.out.print(separator_col);
+            System.out.print(i + " ");
+
+            for (int j = 0; j < 8; j++) {
+                Piece piece = getPiece(new Coordinate(i,j));
+                String content = (piece == null) ? "   " : piece.toString();
+                System.out.print("|" + content);
             }
-            System.out.println();
+            System.out.print("|\n");
         }
+        System.out.print(separator_col);
     }
 }
