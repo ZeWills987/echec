@@ -3,6 +3,7 @@ package fr.chess.model;
 public abstract class Piece {
     private final Color color;
     private final PieceType type;
+    private Coordinate position;
 
     public Piece(Color color, PieceType type){
         this.color = color;
@@ -15,6 +16,14 @@ public abstract class Piece {
 
     public PieceType getType(){
         return type;
+    }
+
+    public Coordinate getPosition(){
+        return position;
+    }
+
+    public void setPosition(Coordinate target){
+        this.position = target;
     }
 
     public abstract boolean isValidMove(Coordinate start, Coordinate end);
