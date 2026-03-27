@@ -38,7 +38,7 @@ public class GameManager {
 
 
         switchTurn();
-        return false;
+        return true;
     }
 
     /**
