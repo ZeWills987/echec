@@ -70,7 +70,7 @@ public class Referee {
         Piece p = board.getPiece(start);
         if (p == null) return false;
 
-        if (!p.isValidMove(start, target) || !MoveValidator.isPathClear(start, target, board)) {
+        if (!moveValidator.isLegalMove(start, target,board)) {
             return false;
         }
 
