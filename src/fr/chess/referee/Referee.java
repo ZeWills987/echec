@@ -58,6 +58,14 @@ public class Referee {
         return true;
     }
 
+    /**
+     * Check if piece move is legal and if king is safe
+     *
+     * @param start
+     * @param target
+     * @param board
+     * @return
+     */
     public boolean isMoveLegal(Coordinate start, Coordinate target, Board board) {
         Piece p = board.getPiece(start);
         if (p == null) return false;

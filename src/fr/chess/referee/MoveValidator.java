@@ -42,7 +42,7 @@ public class MoveValidator {
     }
 
     /**
-     * Check if target position is a legal move.
+     * Check if target position is a legal move(move and clear path).
      *
      * @param source: the initial position
      * @param target: the target position
@@ -57,10 +57,13 @@ public class MoveValidator {
 
         if(targetPiece!=null && targetPiece.getColor() == movingPiece.getColor())return false;
 
+        // Check if it's a move the piece can do (move and capture)
         if(!movingPiece.isValidMove(source,target))return false;
 
+        // Check if between source and target we have nothing in way
         if(!isPathClear(source,target,board)) return false;
 
+        // The case of pawn
         if(movingPiece.getType()==PieceType.PAWN){
             boolean isDiagonal = (source.col() != target.col());
 
