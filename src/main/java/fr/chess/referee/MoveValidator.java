@@ -28,6 +28,8 @@ public class MoveValidator {
         int currentCol = source.col() +stepCol;
 
         while(currentRow!=target.row() || currentCol!=target.col()){
+            if (currentRow < 0 || currentRow > 7 || currentCol < 0 || currentCol > 7) break;
+
             Coordinate current = new Coordinate(currentRow,currentCol);
 
             if(!board.isEmpty(current)){
