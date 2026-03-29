@@ -1,19 +1,10 @@
 package fr.chess.referee;
 
-import fr.chess.Main;
-import fr.chess.controller.GameManager;
 import fr.chess.helper.Utils;
 import fr.chess.model.Board;
 import fr.chess.model.Coordinate;
-import fr.chess.model.Piece;
-import jdk.jshell.execution.Util;
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
