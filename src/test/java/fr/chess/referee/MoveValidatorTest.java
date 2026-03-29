@@ -65,14 +65,14 @@ class MoveValidatorTest {
     @ParameterizedTest(name = "Test {index}: at {0} to {1} expected {2} ({3})")
     @CsvSource({
             // SOURCE, TARGET, EXPECTED, MESSAGE
-            "d2, d7, false, 'Block by pawn in d5'",
-            "d2, d4, true,  'Vertical path clear before pawn'",
-            "h1, b7, false, 'Block by Pawn in d5'",
+            "d2, d6, false, 'Block by pawn in d5'",
+            "d2, d5, true,  'Capture pawn'",
+            "h1, e4, false, 'Allie Pawn in d5'",
             "h1, f3, true,  'Diagonal path clear before pawn'",
-            "e4, d5, true,  'No path between source and target'",
-            "e4, e5, true,  'Pawn path clear'",
-            "c7, c5, false, 'Black pawn path block by white pawn'",
-            "b7, b5, true,  'Black pawn path clear'",
+            "e4, d5, true,  'Capture black pawn'",
+            "g7, e6, false, 'Allie bishop'",
+            "c7, c4, false, 'Can't capture white pawn in horizontale'",
+            "g7, f5, true,  'Knight legal move'",
 
     })
     void isLegalMove(String src, String dest, boolean expected, String message) {
