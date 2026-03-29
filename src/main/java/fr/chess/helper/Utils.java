@@ -36,73 +36,29 @@ public class Utils {
     }
 
     /**
-     * Convert a char to Piece.
-     *
-     * @param c: the piece type first letter
-     * @return the piece type.
-     */
-    public static Piece charToPiece(char c) {
-        boolean isWhite = Character.isUpperCase(c);
-        char type = Character.toLowerCase(c);
-        Color color = isWhite ? Color.WHITE : Color.BLACK;
-
-        return switch (type) {
-            case 'p' -> new Pawn(color);
-            case 'r' -> new Rook(color);
-            case 'n' -> new Knight(color);
-            case 'b' -> new Bishop(color);
-            case 'q' -> new Queen(color);
-            case 'k' -> new King(color);
-            default -> null;
-        };
-    }
-
-    /**
      * Convert a message to Board.
      *
-     * @param content: the content
+     * @param asciiBoard: the string board
      * @return the board.
      */
-    public static Board stringToBoard(String content) {
-        Board board = new Board();
-        String cleanContent = content.replaceAll("\\s+", "");
-
-        for (int i = 0; i < cleanContent.length() && i < 64; i++) {
-            char c = cleanContent.charAt(i);
-            int row = i / 8;
-            int col = i % 8;
-            Coordinate coord = new Coordinate(row, col);
-
-            Piece piece = charToPiece(c);
-            if (piece != null) {
-                board.setPiece(piece, coord);
-            }
-        }
-        return board;
-    }
-
     public static Board strToBoard(String asciiBoard) {
         Board board = new Board();
         String[] lines = asciiBoard.split("\n");
-
-        // On parcourt les 8 lignes d'échecs (8 à 1)
-        // Dans ton String, la ligne '8' est à l'index 1 (la 2ème ligne)
-        // Les lignes de pièces sont espacées de 2 dans ton ASCII
         for (int rank = 0; rank < 8; rank++) {
             int stringLineIndex = 1 + (rank * 2);
+
+            if (stringLineIndex >= lines.length) break;
             String line = lines[stringLineIndex];
 
             for (int file = 0; file < 8; file++) {
-                // Calcul de la position horizontale du texte dans la case
-                // Le premier contenu est au caractère index 4, puis tous les 4 caractères
-                int charIndex = 4 + (file * 4);
+                int charIndex = 3 + (file * 4);
 
-                if (charIndex + 2 < line.length()) {
+                if (charIndex + 3 <= line.length()) {
                     String pieceCode = line.substring(charIndex, charIndex + 3).trim();
 
-                    if (!pieceCode.isEmpty() && !pieceCode.equals("|")) {
+                    if (!pieceCode.isEmpty()) {
                         Coordinate coord = new Coordinate(rank, file);
-                        board.setPiece(parsePieceCode(pieceCode),coord);
+                        board.setPiece(parsePieceCode(pieceCode), coord);
                     }
                 }
             }
@@ -110,6 +66,12 @@ public class Utils {
         return board;
     }
 
+    /**
+     * Convert string piece to real piece.
+     *
+     * @param code: the string piece
+     * @return the piece.
+     */
     public static Piece parsePieceCode(String code) {
         // Code attendu : "BW-" (Bishop White), "PB-" (Pawn Black), etc.
         if (code.length() < 2) return null;
@@ -128,23 +90,5 @@ public class Utils {
             case 'K' -> new King(color);
             default -> null;
         };
-    }
-
-    public static Coordinate asciiToCoord(int rowLine, int colChar) {
-        // 1. Calcul de la ligne (Row)
-        // Dans ton dessin, les pièces sont sur les lignes impaires : 1, 3, 5...
-        // On transforme l'index du String en index de tableau (0-7)
-        int row = (rowLine - 1) / 2;
-
-        // 2. Calcul de la colonne (Col)
-        // Les pièces commencent au caractère 4, puis tous les 4 caractères (|   |)
-        int col = (colChar - 4) / 4;
-
-        // Sécurité pour ne pas sortir du tableau 8x8
-        if (row < 0 || row > 7 || col < 0 || col > 7) {
-            throw new IllegalArgumentException("Position ASCII hors limites");
-        }
-
-        return new Coordinate(row, col);
     }
 }
