@@ -44,8 +44,25 @@ class BoardTest {
     void deletePiece() {
     }
 
-    @Test
-    void getActivePieces() {
+    @ParameterizedTest(name = "Test {index}: expected {2})")
+    @CsvSource({
+            // IsWhite, EXPECTED, MESSAGE
+            "true ,1,  '2 white pieces'",
+            "false ,2, '1 black pieces'",
+
+    })
+    void getActivePieces(boolean isWhite,String expected, String message) {
+        Board board = Utils.strToBoard(strBoard);
+        board.displayBoard();
+        Color color;
+        if(isWhite){
+            color = Color.WHITE;
+        }else{
+            color = Color.BLACK;
+        }
+        int numberPieces = board.getActivePieces(color).size();
+
+        assertEquals(expected, String.valueOf(numberPieces), message);
     }
 
     @Test
